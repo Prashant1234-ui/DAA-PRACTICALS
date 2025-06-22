@@ -1,0 +1,29 @@
+def knapsack(wt, val, cap):
+    items = [(i, wt[i], val[i], val[i]/wt[i]) for i in range(len(wt))]
+    items.sort(key=lambda x: x[3], reverse=True)  # sort by value/weight ratio
+
+    total_profit = 0
+    include_items = []
+
+    for i, weight, profit, ratio in items:
+        if cap >= weight:
+            include_items.append((i, 1))  # full item taken
+            total_profit += profit
+            cap -= weight
+        else:
+            frac = cap / weight
+            total_profit += frac * profit
+            include_items.append((i, frac))
+            break  # bag is full
+
+    return total_profit, include_items
+
+# Inputs
+wt = [30, 20, 10]
+val = [60, 50, 40]
+cap = 50
+
+total_profit, include_items = knapsack(wt, val, cap)
+
+print("total_profit is:", total_profit)
+print("include_items are:", include_items)
